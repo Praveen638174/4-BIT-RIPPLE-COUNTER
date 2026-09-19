@@ -1,5 +1,7 @@
 # 4-BIT-RIPPLE-COUNTER
 
+
+
 **AIM:**
 
 To implement  4 Bit Ripple Counter using verilog and validating their functionality using their functional tables
@@ -25,41 +27,73 @@ In timing diagram Q0 is changing as soon as the negative edge of clock pulse is 
 **Procedure**
 
 /* write all the steps invloved */
-1.Code Overview: Understand the Verilog module ripple_counter, which includes clock (clk) and reset (rst) inputs, and a 4-bit output count. The counter increments on each positive clock edge unless reset is asserted, resetting the count to 0.
-
-2.Simulation Preparation: Use a Verilog simulator (e.g., ModelSim) and write a testbench module to apply clock and reset signals while monitoring the counter output.
-
-3.Testbench Implementation: Instantiate the ripple_counter module in the testbench, generate clock and reset signals, apply them to the counter module, and observe the count output.
-
-4.Simulation Execution: Compile both the counter module and the testbench, simulate the design, and verify that the counter counts from 0 to 15 (binary 1111) and resets to 0 when the reset signal is activated.
-
-5.Verification and Debugging: Analyze timing diagrams to ensure proper counter behavior, debug any encountered issues during simulation, and make necessary modifications to the design for optimal functionality.
 
 **PROGRAM**
+```
+module fourbit(q, clk, reset);
+
+output [3:0] q;
+input clk, reset;
+
+T_FF tff0(q[0], clk, reset);
+T_FF tff1(q[1], q[0], reset);
+T_FF tff2(q[2], q[1], reset);
+T_FF tff3(q[3], q[2], reset);
+
+endmodule
+
+
+module T_FF(q, clk, reset);
+
+output q;
+input clk, reset;
+
+wire d;
+
+D_FF dff0(q, d, clk, reset);
+
+not n1(d, q);
+
+endmodule
+
+
+module D_FF(q, d, clk, reset);
+
+output q;
+input d, clk, reset;
+
+reg q;
+
+always @(negedge clk or posedge reset)
+begin
+    if (reset)
+        q <= 1'b0;
+    else
+        q <= d;
+end
+
+endmodule
+
+```
 
 /* Program for 4 Bit Ripple Counter and verify its truth table in quartus using Verilog programming.
 
- Developed by: PRIYAADARSHINI K RegisterNumber: 212223240126
+ Developed by:Praveen Raj G RegisterNumber:212224040245
 */
-```
-module ex12(clk, rst, count);
-input wire clk;
-input wire rst;
-output reg [3:0] count;
+<img width="1672" height="940" alt="image" src="https://github.com/user-attachments/assets/17786e99-40d0-447e-a63e-7ab8960eca7b" />
 
-always @(posedge clk or posedge rst)
-begin
-	if(rst)
-		count <= 4'b0000;
-	else
-		count <= count + 1;
-end
-endmodule
-```
+
 **RTL LOGIC FOR 4 Bit Ripple Counter**
-![image](https://github.com/user-attachments/assets/71b8da6f-b3eb-46fb-adcc-333df460d542)
+<img width="1673" height="940" alt="image" src="https://github.com/user-attachments/assets/786f8003-cd31-4ae5-989d-30cf5b8596b3" />
+
 
 **TIMING DIGRAMS FOR 4 Bit Ripple Counter**
+<img width="1674" height="940" alt="image" src="https://github.com/user-attachments/assets/a1a35f38-ab43-411c-aeb2-4461aa86a9d3" />
+
+
+**RESULTS**
+The 4-bit Ripple Counter was successfully designed and its counting operation was verified.
+
 ![image](https://github.com/user-attachments/assets/909d665f-2d9f-43c8-91fb-4629e4382458)
 
 **RESULTS**
